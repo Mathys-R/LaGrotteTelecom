@@ -18,7 +18,6 @@ class Salle {
     public int getAmeliorationAttaque() {
         return ameliorationAttaque;
     }
-
     public int getAmeliorationDefense() {
         return ameliorationDefense;
     }
