@@ -5,5 +5,12 @@ public interface Character {
     void attack(int damage,Character target);
     void heal(int heal);
     void shield();
+    boolean isAlive();
+    int getHP();
+    int getDEF();
+    int getATK();
+    int getRange();
+    int getPosX();
+    int getPosY();
 
 }

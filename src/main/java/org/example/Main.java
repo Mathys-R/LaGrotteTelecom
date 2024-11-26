@@ -4,7 +4,10 @@ package org.example;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        System.out.println("Java project by Louison Prodhomme and Mathys Rosinski for IMT Nord Europe");
+      
         Map gameMap = new Map();
         gameMap.afficherSalles();
+
     }
 }
