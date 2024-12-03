@@ -29,4 +29,15 @@ public class Map {
             System.out.println("Salle " + (i + 1) + ": " + salles.get(i));
         }
     }
+
+    public void afficherGrilleSalle() {
+        if (salles.isEmpty()) {
+            System.out.println("Il n'y a pas de salles générées.");
+            return;
+        }
+
+        Salle premiereSalle = salles.get(0); // Récupère la première salle
+        System.out.println("Grille de la première salle (" + premiereSalle.getNom() + "):");
+        //Salle.afficherMatrice(); // Affiche la grille
+    }
 }
