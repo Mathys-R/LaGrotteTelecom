@@ -6,11 +6,14 @@ public class Main {
     public static void main(String[] args) {
         //Map gameMap = new Map();
         //gameMap.afficherSalles();
-        //gameMap.afficherGrilleSalle(); // Affiche la grille
 
         Salle salle = new Salle("Forêt Enchantée", 3, 2);
         salle.afficherMatrice();
         // salle.afficherMatriceAvecCouleurs();
 
     }
+
+
+
+
 }

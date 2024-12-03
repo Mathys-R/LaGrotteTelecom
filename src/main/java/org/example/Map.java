@@ -7,7 +7,7 @@ public class Map {
     private List<Salle> salles;
 
     public Map() {
-        salles = new ArrayList<>();
+        salles = new ArrayList<Salle>();
         genererSalles();
     }
 

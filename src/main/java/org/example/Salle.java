@@ -32,7 +32,7 @@ class Salle {
     @Override
     public String toString() {
         return "Salle: " + nom +
-                " | Amélioration Génération: " + ameliorationAttaque +
+                " | Amélioration Attaque: " + ameliorationAttaque +
                 " | Amélioration Défense: " + ameliorationDefense;
     }
 
@@ -72,11 +72,40 @@ class Salle {
             grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
 
             // Création dynamique et aléatoire
-            // NPC npc = new NPC(posX,posY) // Création d'un NPC justa avec les co, le reste random
+            // NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
             // grille[npc.posX].set(npc.posY, npc.NAME.charAt(0));
         }
 
         return grille; // Retourne la matrice créée
+    }
+
+    // Création de NPC aléatoirement pour avoir une diversité de NPC
+    public static NPC creerNPCAleatoire(int posX, int posY) {
+        Random random = new Random();
+        int type = random.nextInt(3); // Génère un entier aléatoire entre 0 et 2
+
+        switch (type) {
+            case 0:
+                return new Troll(posX, posY); // Retourne un Troll
+            case 1:
+                return new Orc(posX, posY); // Retourne un Orc
+            case 2:
+                return new Goblin(posX, posY); // Retourne un Goblin
+            default:
+                throw new IllegalStateException("Valeur inattendue : " + type);
+        }
+    }
+
+    // Méthode pour vérifier si la grille est vide
+    public boolean matriceIsEmpty() {
+        for (ArrayList<String> row : grille) {
+            for (String cell : row) {
+                if (!cell.equals(" ")) { // Si une cellule n'est pas vide, la grille n'est pas vide
+                    return false;
+                }
+            }
+        }
+        return true; // Si aucune cellule n'est occupée, la grille est vide
     }
 
     // Méthode pour afficher la grille
@@ -120,6 +149,5 @@ class Salle {
             System.out.println(coloredRow); // Affiche la ligne
         }
     }
-    //hello
 }
 
