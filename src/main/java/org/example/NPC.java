@@ -1,17 +1,27 @@
 package org.example;
 
+import static java.lang.Math.abs;
+
 public abstract class NPC implements Character {
     static private int LastID = 0;
-    private int ID;
+    private final int ID;
+    private static int hpMax;
     private int HP;
     private int DEF;
     private int ATK;
+    private int range;
+    private int posX;
+    private int posY;
 
-    public NPC(int HP, int DEF, int ATK) {
+    public NPC(int hpMax, int DEF, int ATK, int range, int posX, int posY) {
         this.ID = ++LastID;
-        this.HP = HP;
+        this.hpMax = hpMax;
+        this.HP = hpMax;
         this.DEF = DEF;
         this.ATK = ATK;
+        this.range = range;
+        this.posX = posX;
+        this.posY = posY;
     }
 
     public int getHP() {
@@ -26,6 +36,9 @@ public abstract class NPC implements Character {
     public int getID() {
         return ID;
     }
+    public int getRange() {return range;}
+    public int getPosX() {return posX;}
+    public int getPosY() {return posY;}
 
     public void setHP(int HP) {
         this.HP = HP;
@@ -36,24 +49,30 @@ public abstract class NPC implements Character {
     public void setATK(int ATK) {
         this.ATK = ATK;
     }
+    public void setRange(int range) {this.range = range;}
+    public void setPosX(int posX) {this.posX = posX;}
+    public void setPosY(int posY) {this.posY = posY;}
 
-    @Override
     public void takeDamage(int damage) {
         this.HP -= damage;
     }
 
-    @Override
     public void attack(int damage, Character target) {
-        target.takeDamage(damage);
+        int distance = abs((target.getPosX()+target.getPosY())-(getPosX()+getPosY()));
+        if (distance>=0 && distance<=range) {
+            target.takeDamage(damage);
+        }
     }
 
-    @Override
     public void heal(int heal) {
-        this.HP += heal;
+        if (heal+this.HP>hpMax) {
+            this.HP = hpMax;
+        }
     }
 
-    @Override
     public void shield() {
         this.DEF += 5;
     }
+
+    public boolean isAlive() {return HP>0;}
 }

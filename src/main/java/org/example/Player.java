@@ -1,67 +1,78 @@
 package org.example;
 
+import static java.lang.Math.abs;
+
 public class Player implements Character{
+    private final String NAME;
+    private static int hpMax;
     private int HP;
     private int DEF;
     private int ATK;
-    private String NAME;
+    private int range;
+    private int posX;
+    private int posY;
 
-    public Player(int HP, int DEF, int ATK, String NAME) {
-        this.HP = HP;
+    public Player(int hpMax, int DEF, int ATK, String NAME, int range, int posX, int posY) {
+        this.hpMax = hpMax;
+        this.HP = hpMax;
         this.DEF = DEF;
         this.ATK = ATK;
         this.NAME = NAME;
-    }
-
-    public int getHP() {
-        return HP;
-    }
-
-    public void setHP(int HP) {
-        this.HP = HP;
-    }
-
-    public int getDEF() {
-        return DEF;
-    }
-
-    public void setDEF(int DEF) {
-        this.DEF = DEF;
-    }
-
-    public int getATK() {
-        return ATK;
-    }
-
-    public void setATK(int ATK) {
-        this.ATK = ATK;
+        this.range = range;
+        this.posX = posX;
+        this.posY = posY;
     }
 
     public String getNAME() {
         return NAME;
     }
-
-    public void setNAME(String NAME) {
-        this.NAME = NAME;
+    public int getHP() {
+        return HP;
     }
+    public int getDEF() {
+        return DEF;
+    }
+    public int getATK() {
+        return ATK;
+    }
+    public int getRange() {return range;}
+    public int getPosX() {return posX;}
+    public int getPosY() {return posY;}
 
-    @Override
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+    public void setDEF(int DEF) {
+        this.DEF = DEF;
+    }
+    public void setATK(int ATK) {
+        this.ATK = ATK;
+    }
+    public void setRange(int range) {this.range = range;}
+    public void setPosX(int posX) {this.posX = posX;}
+    public void setPosY(int posY) {this.posY = posY;}
+
     public void takeDamage(int damage) {
         this.HP -= damage;
     }
 
-    @Override
     public void attack(int damage, Character target) {
-        target.takeDamage(damage);
+        int distance = abs((target.getPosX()+target.getPosY())-(getPosX()+getPosY()));
+        if (distance>=0 && distance<=range) {
+            target.takeDamage(damage);
+        }
+        else System.out.println("La cible est hors de portée !");
     }
 
-    @Override
     public void heal(int heal) {
-        this.HP += heal;
+        if (heal+this.HP>hpMax) {
+            this.HP = hpMax;
+        }
     }
 
-    @Override
     public void shield() {
         this.DEF += 5;
     }
+
+    public boolean isAlive() {return HP>0;}
 }
