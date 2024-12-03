@@ -2,7 +2,7 @@ package org.example;
 
 public class Troll extends NPC implements Character{
 
-    public Troll() {
-        super(1000, 20, 50);
+    public Troll(int posX, int posY) {
+        super(1000, 20, 50, 1,posX, posY);
     }
 }
