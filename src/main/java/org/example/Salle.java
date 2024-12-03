@@ -2,16 +2,21 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
+
+
 
 class Salle {
     private String nom;
     private int ameliorationAttaque;
     private int ameliorationDefense;
     private ArrayList<String>[] grille; // Tableau de lignes (ArrayList<String>)
+    private static final Logger logger = LogControler.getLogger();
 
     @SuppressWarnings("unchecked")
     public Salle(String nom, int ameliorationAttaque, int ameliorationDefense) {
         this.nom = nom;
+        logger.info("Création d'une nouvelle salle : " + nom);
         this.ameliorationAttaque = ameliorationAttaque;
         this.ameliorationDefense = ameliorationDefense;
         grille = creerMatrice(); // Génération de la grille
