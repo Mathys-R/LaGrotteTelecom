@@ -2,24 +2,19 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.Logger;
-
-
 
 class Salle {
     private String nom;
     private int ameliorationAttaque;
     private int ameliorationDefense;
     private ArrayList<String>[] grille; // Tableau de lignes (ArrayList<String>)
-    private static final Logger logger = LogControler.getLogger();
 
     @SuppressWarnings("unchecked")
-    public Salle(String nom, int ameliorationAttaque, int ameliorationDefense) {
+    public Salle(String nom, int ameliorationAttaque, int ameliorationDefense, Player player) {
         this.nom = nom;
-        logger.info("Création d'une nouvelle salle : " + nom);
         this.ameliorationAttaque = ameliorationAttaque;
         this.ameliorationDefense = ameliorationDefense;
-        grille = creerMatrice(); // Génération de la grille
+        grille = creerMatrice(player); // Génération de la grille
     }
 
     public String getNom() {
@@ -36,14 +31,14 @@ class Salle {
 
     @Override
     public String toString() {
-        return "Salle: " + nom +
+        return nom +
                 " | Amélioration Attaque: " + ameliorationAttaque +
                 " | Amélioration Défense: " + ameliorationDefense;
     }
 
     // Génère une matrice sous forme d'ArrayList<String>[]
     @SuppressWarnings("unchecked")
-    private static ArrayList<String>[] creerMatrice() {
+    private static ArrayList<String>[] creerMatrice(Player player) {
         Random r = new Random();
 
         // Dimensions de la grille
@@ -61,9 +56,10 @@ class Salle {
             grille[i] = row;
         }
 
+        grille[1].set(0, player.getNAME());
+
         // Création des NPC
         String[] staticNPC = { "M", "A", "R", "D" };
-
         // Générer un nombre aléatoire de NPC entre 2 et 4
         int nombrePersonnages = r.nextInt(3) + 2;
 
@@ -77,40 +73,11 @@ class Salle {
             grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
 
             // Création dynamique et aléatoire
-            // NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
+            // NPC npc = new NPC(posX,posY) // Création d'un NPC justa avec les co, le reste random
             // grille[npc.posX].set(npc.posY, npc.NAME.charAt(0));
         }
 
         return grille; // Retourne la matrice créée
-    }
-
-    // Création de NPC aléatoirement pour avoir une diversité de NPC
-    public static NPC creerNPCAleatoire(int posX, int posY) {
-        Random random = new Random();
-        int type = random.nextInt(3); // Génère un entier aléatoire entre 0 et 2
-
-        switch (type) {
-            case 0:
-                return new Troll(posX, posY); // Retourne un Troll
-            case 1:
-                return new Orc(posX, posY); // Retourne un Orc
-            case 2:
-                return new Goblin(posX, posY); // Retourne un Goblin
-            default:
-                throw new IllegalStateException("Valeur inattendue : " + type);
-        }
-    }
-
-    // Méthode pour vérifier si la grille est vide
-    public boolean matriceIsEmpty() {
-        for (ArrayList<String> row : grille) {
-            for (String cell : row) {
-                if (!cell.equals(" ")) { // Si une cellule n'est pas vide, la grille n'est pas vide
-                    return false;
-                }
-            }
-        }
-        return true; // Si aucune cellule n'est occupée, la grille est vide
     }
 
     // Méthode pour afficher la grille
@@ -118,6 +85,31 @@ class Salle {
         System.out.println("Positionnement des personnages dans "+getNom());
         for (ArrayList<String> row : grille) {
             System.out.println(row);
+        }
+    }
+
+    // Vérifie si la salle contient encore au moins un NPC
+    public boolean contientNPC() {
+        for (ArrayList<String> row : grille) { // Parcourt chaque ligne de la grille
+            for (String cell : row) { // Parcourt chaque cellule de la ligne
+                // Vérifie si la cellule contient un caractère qui n'est pas un espace
+                if (!cell.equals(" ") && !cell.equals("M")) {
+                    return true; // Retourne vrai si un NPC est trouvé
+                }
+            }
+        }
+        return false; // Retourne faux si aucune cellule n'a de NPC
+    }
+
+    // Vide la salle de ses NPCs sauf "M"
+    public void viderSalleSaufM() {
+        for (ArrayList<String> row : grille) { // Parcourt chaque ligne de la grille
+            for (int i = 0; i < row.size(); i++) { // Parcourt chaque cellule de la ligne
+                // Si la cellule ne contient pas "M" et n'est pas vide
+                if (!row.get(i).equals(" ") && !row.get(i).equals("M")) {
+                    row.set(i, " "); // Remplace le contenu par une cellule vide
+                }
+            }
         }
     }
 
@@ -154,5 +146,6 @@ class Salle {
             System.out.println(coloredRow); // Affiche la ligne
         }
     }
+    //hello
 }
 

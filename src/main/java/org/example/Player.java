@@ -4,7 +4,7 @@ import static java.lang.Math.abs;
 
 public class Player implements Character{
     private final String NAME;
-    private static int hpMax;
+    private final int hpMax;
     private int HP;
     private int DEF;
     private int ATK;
@@ -12,15 +12,24 @@ public class Player implements Character{
     private int posX;
     private int posY;
 
-    public Player(int hpMax, int DEF, int ATK, String NAME, int range, int posX, int posY) {
-        this.hpMax = hpMax;
-        this.HP = hpMax;
-        this.DEF = DEF;
-        this.ATK = ATK;
+    public Player(String NAME) {
         this.NAME = NAME;
-        this.range = range;
-        this.posX = posX;
-        this.posY = posY;
+        this.posX = 0;
+        this.posY = 0;
+
+        if (CheatMode.isCheatMode()) {
+            this.hpMax = 10000; // Mode cheat : HP boostés
+            this.HP = 10000;
+            this.DEF = 10000;
+            this.ATK = 10000;
+            this.range = 10000;
+        } else {
+            this.hpMax = 100; // Valeurs par défaut
+            this.HP = 100;
+            this.DEF = 10;
+            this.ATK = 15;
+            this.range = 2;
+        }
     }
 
     public String getNAME() {
@@ -49,8 +58,9 @@ public class Player implements Character{
         this.ATK = ATK;
     }
     public void setRange(int range) {this.range = range;}
-    public void setPosX(int posX) {this.posX = posX;}
+    public void setPos(int posX) {this.posX = posX;}
     public void setPosY(int posY) {this.posY = posY;}
+
 
     public void takeDamage(int damage) {
         this.HP -= damage;
