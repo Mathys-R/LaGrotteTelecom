@@ -70,11 +70,12 @@ class Salle {
                 posY = r.nextInt(cols);
             } while (!grille[posX].get(posY).equals(" ")); // Vérifie si la cellule est déjà occupée
 
-            grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
+            // grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
 
             // Création dynamique et aléatoire
             // NPC npc = new NPC(posX,posY) // Création d'un NPC justa avec les co, le reste random
-            // grille[npc.posX].set(npc.posY, npc.NAME.charAt(0));
+            NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
+            grille[npc.getPosX()].set(npc.getPosY(), npc.name.charAt(0));
         }
 
         return grille; // Retourne la matrice créée
@@ -146,6 +147,22 @@ class Salle {
             System.out.println(coloredRow); // Affiche la ligne
         }
     }
-    //hello
+
+    // Création de NPC aléatoirement pour avoir une diversité de NPC
+    public static NPC creerNPCAleatoire(int posX, int posY) {
+        Random random = new Random();
+        int type = random.nextInt(3); // Génère un entier aléatoire entre 0 et 2
+
+        switch (type) {
+            case 0:
+                return new Troll(posX, posY); // Retourne un Troll
+            case 1:
+                return new Orc(posX, posY); // Retourne un Orc
+            case 2:
+                return new Goblin(posX, posY); // Retourne un Goblin
+            default:
+                throw new IllegalStateException("Valeur inattendue : " + type);
+        }
+    }
 }
 
