@@ -56,7 +56,7 @@ class Salle {
             grille[i] = row;
         }
 
-        grille[1].set(0, player.getNAME());
+        grille[1].set(0, String.valueOf(player.getNAME().charAt(0)));
 
         // Création des NPC
         String[] staticNPC = { "M", "A", "R", "D" };
@@ -75,7 +75,7 @@ class Salle {
             // Création dynamique et aléatoire
             // NPC npc = new NPC(posX,posY) // Création d'un NPC justa avec les co, le reste random
             NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
-            grille[npc.getPosX()].set(npc.getPosY(), npc.name.charAt(0));
+            grille[npc.getPosX()].set(npc.getPosY(), String.valueOf(npc.getName().charAt(0)));
         }
 
         return grille; // Retourne la matrice créée

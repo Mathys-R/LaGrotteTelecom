@@ -109,6 +109,7 @@ public class Main {
                     //Attaque Joueur
                     System.out.println("Attaque");
                     hasPlayed = true;
+                    // cible un joueur
                     break;
                 case "heal":
                     //Heal Joueur
