@@ -1,9 +1,9 @@
 package org.example;
 
-
 import java.util.Random;
 
 public class Troll extends NPC implements Character{
+
 
     private static final String[] NOMS_TROLL = {"Gourmant", "Paresseux", "Costaud", "Grogon"};
 

@@ -8,6 +8,7 @@ class Salle {
     private int ameliorationAttaque;
     private int ameliorationDefense;
     private ArrayList<String>[] grille; // Tableau de lignes (ArrayList<String>)
+    private ArrayList<NPC> listNPC;
 
     @SuppressWarnings("unchecked")
     public Salle(String nom, int ameliorationAttaque, int ameliorationDefense, Player player) {
@@ -15,6 +16,7 @@ class Salle {
         this.ameliorationAttaque = ameliorationAttaque;
         this.ameliorationDefense = ameliorationDefense;
         grille = creerMatrice(player); // Génération de la grille
+        this.listNPC = new ArrayList<>();
     }
 
     public String getNom() {
@@ -25,6 +27,7 @@ class Salle {
     public int getAmeliorationAttaque() {
         return ameliorationAttaque;
     }
+
     public int getAmeliorationDefense() {
         return ameliorationDefense;
     }
@@ -36,9 +39,19 @@ class Salle {
                 " | Amélioration Défense: " + ameliorationDefense;
     }
 
+    public void showNPC() {
+        for (NPC mob : listNPC) {
+            System.out.println(mob);
+        }
+    }
+
+    public ArrayList<NPC> getListNPC() {
+        return listNPC;
+    }
+
     // Génère une matrice sous forme d'ArrayList<String>[]
     @SuppressWarnings("unchecked")
-    private static ArrayList<String>[] creerMatrice(Player player) {
+    private ArrayList<String>[] creerMatrice(Player player) {
         Random r = new Random();
 
         // Dimensions de la grille
@@ -73,7 +86,6 @@ class Salle {
             // grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
 
             // Création dynamique et aléatoire
-            // NPC npc = new NPC(posX,posY) // Création d'un NPC justa avec les co, le reste random
             NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
             grille[npc.getPosX()].set(npc.getPosY(), String.valueOf(npc.getName().charAt(0)));
         }
@@ -81,9 +93,30 @@ class Salle {
         return grille; // Retourne la matrice créée
     }
 
+    public Boolean deplacementCharacter(Character target, int newPosX, int newPosY) {
+        if (grille[newPosX].get(newPosY).equals(" ")) {
+            grille[newPosX].set(newPosY, target.getNAME());
+            grille[target.getPosX()].set(target.getPosY(), " ");
+            target.setPosX(newPosX);
+            target.setPosY(newPosY);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public NPC getNpcByID(int ID) {
+        for (NPC mob : listNPC) {
+            if (mob.getID() == ID) {
+                return mob;
+            }
+        }
+        return null;
+    }
+
     // Méthode pour afficher la grille
     public void afficherMatrice() {
-        System.out.println("Positionnement des personnages dans "+getNom());
+        System.out.println("Positionnement des personnages dans " + getNom());
         for (ArrayList<String> row : grille) {
             System.out.println(row);
         }
@@ -118,9 +151,9 @@ class Salle {
     public void afficherMatriceAvecCouleurs() {
 
         // Codes ANSI pour les couleurs
-        final String RESET = "\u001B[0m";   // Reset color
-        final String BLUE = "\u001B[34m";   // Blue color, sera utilisé pour le main character
-        final String RED = "\u001B[31m";    // Red color, pourra être utilisé pour un Boss
+        final String RESET = "\u001B[0m"; // Reset color
+        final String BLUE = "\u001B[34m"; // Blue color, sera utilisé pour le main character
+        final String RED = "\u001B[31m"; // Red color, pourra être utilisé pour un Boss
 
         System.out.println("Positionnement des personnages dans " + getNom());
 
@@ -165,4 +198,3 @@ class Salle {
         }
     }
 }
-
