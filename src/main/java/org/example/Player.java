@@ -84,6 +84,7 @@ public class Player implements Character {
         this.posY = posY;
     }
 
+
     public void takeDamage(int damage) {
         this.HP -= damage;
     }
