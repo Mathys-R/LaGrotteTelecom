@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.sound.midi.SysexMessage;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
@@ -127,6 +128,7 @@ public class Main {
                     System.out.println("Erreur dans la Saisie, veuillez réessayer");
             }
         }
+
         System.out.println("Félicitations ! Vous êtes venus à bout de ces " + currentSalleID + " salles !");
     }
 
@@ -184,7 +186,6 @@ public class Main {
 
         CheatMode.setCheatMode(false);
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Bienvenue à la Grotte Télécom !");
         System.out.println(
                 "Disclaimer ! Vos inputs ne sont pas case sensitive, mais faites attention à l'orthographe \\uD83D\\uDE00");

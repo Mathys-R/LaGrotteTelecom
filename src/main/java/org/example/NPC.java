@@ -6,6 +6,7 @@ public abstract class NPC implements Character {
     static private int LastID = 0;
     private final String NAME;
     private final int ID;
+    private String name;
     private static int hpMax;
     private int HP;
     private int DEF;
@@ -14,8 +15,9 @@ public abstract class NPC implements Character {
     private int posX;
     private int posY;
 
-    public NPC(int hpMax, String NAME, int DEF, int ATK, int range, int posX, int posY) {
+    public NPC(String name, int hpMax, int DEF, int ATK, int range, int posX, int posY) {
         this.ID = ++LastID;
+        this.name = name;
         this.hpMax = hpMax;
         this.NAME = NAME;
         this.HP = hpMax;
@@ -26,6 +28,7 @@ public abstract class NPC implements Character {
         this.posY = posY;
     }
 
+    public String getName() {return name;}
     public int getHP() {
         return HP;
     }
@@ -58,6 +61,7 @@ public abstract class NPC implements Character {
         return posY;
     }
 
+    public void setName(String name) {this.name = name;}
     public void setHP(int HP) {
         this.HP = HP;
     }
@@ -109,7 +113,7 @@ public abstract class NPC implements Character {
 
     @Override
     public String toString() {
-        return NAME + "{" +
+        return name + "{" +
                 "ID=" + ID +
                 ", hpMax=" + hpMax +
                 ", HP=" + HP +
