@@ -101,8 +101,8 @@ public class Player implements Character {
     }
 
     public void heal(int heal) {
-        if (heal + this.HP > hpMax) {
-            this.HP = hpMax;
+        if (heal > 0) { // Vérifie que la valeur de heal est positive
+            this.HP = Math.min(this.HP + heal, hpMax);
         }
     }
 
