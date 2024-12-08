@@ -12,8 +12,8 @@ public class Player implements Character {
     private int posX;
     private int posY;
 
-    public Player(String NAME) {
-        this.name = NAME;
+    public Player(String name) {
+        this.name = name;
         this.posX = 0;
         this.posY = 0;
 
@@ -38,6 +38,10 @@ public class Player implements Character {
 
     public int getHP() {
         return HP;
+    }
+
+    public int getHPMax() {
+        return hpMax;
     }
 
     public int getDEF() {
@@ -83,7 +87,6 @@ public class Player implements Character {
     public void setPosY(int posY) {
         this.posY = posY;
     }
-
 
     public void takeDamage(int damage) {
         this.HP -= damage;

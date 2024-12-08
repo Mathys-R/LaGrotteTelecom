@@ -6,7 +6,7 @@ public abstract class NPC implements Character {
     static private int LastID = 0;
     private final int ID;
     private String name;
-    private static int hpMax;
+    private int hpMax;
     private int HP;
     private int DEF;
     private int ATK;
@@ -26,11 +26,17 @@ public abstract class NPC implements Character {
         this.posY = posY;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
+
     public int getHP() {
         return HP;
     }
 
+    public int getHPMax() {
+        return hpMax;
+    }
 
     public int getDEF() {
         return DEF;
@@ -56,7 +62,10 @@ public abstract class NPC implements Character {
         return posY;
     }
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setHP(int HP) {
         this.HP = HP;
     }
@@ -123,8 +132,7 @@ public abstract class NPC implements Character {
     public void setAlive(boolean b) {
         if (b == true) {
             this.HP = 1;
-        }
-        else {
+        } else {
             this.HP = 0;
         }
     }

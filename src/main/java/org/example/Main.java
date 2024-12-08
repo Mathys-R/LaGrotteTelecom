@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Logger;
+import static java.lang.Math.abs;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -73,6 +74,53 @@ public class Main {
         player.attack(100, salle.getNpcByID(getIntValue(scanner)));
     }
 
+    private static void moveNPCTowardsPlayer(Salle salle, NPC mob, Player player) {
+        int deltaX = player.getPosX() - mob.getPosX();
+        int deltaY = player.getPosY() - mob.getPosY();
+
+        int newX = mob.getPosX();
+        int newY = mob.getPosY();
+
+        // Priorité au mouvement horizontal (X), puis vertical (Y)
+        if (abs(deltaX) > abs(deltaY)) {
+            newX += (deltaX > 0) ? 1 : -1;
+        } else {
+            newY += (deltaY > 0) ? 1 : -1;
+        }
+
+        // Vérification et application du déplacement
+        if (salle.deplacementCharacter(mob, newX, newY)) {
+            System.out.println(mob.getName() + " s'est déplacé vers (" + newX + ", " + newY + ")");
+        } else {
+            System.out.println(mob.getName() + " n'a pas pu se déplacer !");
+        }
+    }
+
+    public static void npcTurn(Salle salle, Player player) {
+        for (NPC mob : salle.getListNPC()) {
+            int distance = abs(player.getPosX() - mob.getPosX()) + abs(player.getPosY() - mob.getPosY());
+
+            if (distance <= mob.getRange()) {
+                // PNJ à portée d'attaque
+                System.out.println(mob.getName() + " attaque le joueur !");
+                mob.attack(mob.getATK(), player);
+            } else if (mob.getHP() < mob.getHPMax() / 2 && Math.random() > 0.25) {
+                // PNJ se soigne si sa santé est inférieure à 25%
+                System.out.println(mob.getName() + " se soigne !");
+                mob.heal(10);
+            } else {
+                // PNJ se déplace vers le joueur
+                System.out.println(mob.getName() + " se déplace vers le joueur !");
+                moveNPCTowardsPlayer(salle, mob, player);
+            }
+
+            if (!player.isAlive()) {
+                System.out.println("Le joueur a été tué par " + mob.getName() + " !");
+                return; // Fin de la partie
+            }
+        }
+    }
+
     public static void mainMenu(Scanner scanner) {
         while (true) {
             System.out.println("Vous êtes dans le Menu Principal\n" +
@@ -107,7 +155,7 @@ public class Main {
         carte.afficherSalles();
         int currentSalleID = 0;
 
-        while (currentSalleID < carte.getSalleCount()) {
+        while (currentSalleID < carte.getSalleCount() && player.isAlive()) {
             System.out.println("Voulez-vous poursuivre et entrer dans la Salle " + (currentSalleID + 1) + " : "
                     + carte.getSalle(currentSalleID).getNom() + " ?\n" +
                     "\t - Oui\n" +
@@ -121,8 +169,7 @@ public class Main {
                         playSalle(scanner, carte.getSalle(currentSalleID), player);
                         ++currentSalleID;
                         System.out.println(currentSalleID);
-                    } else
-                        System.out.println("Condition Else");
+                    }
                     break;
                 case "non":
                     return;
@@ -130,20 +177,26 @@ public class Main {
                     System.out.println("Erreur dans la Saisie, veuillez réessayer");
             }
         }
-
-        System.out.println("Félicitations ! Vous êtes venus à bout de ces " + currentSalleID + " salles !");
+        if (player.isAlive()) {
+            System.out.println("Félicitations ! Vous êtes venus à bout de ces " + currentSalleID + " salles !");
+        }
     }
 
     public static void playSalle(Scanner scanner, Salle salle, Player player) {
-        while (salle.contientNPC()) {
+
+        while (salle.contientNPC() && player.isAlive()) {
             salle.afficherMatrice();
             playerTurn(scanner, salle, player);
-            // npcTurn
+            npcTurn(salle, player);
 
             System.out.println("Sortie");
             closeProgram(scanner);
         }
-        System.out.println("Sortie");
+        if (player.isAlive()) {
+            System.out.println("Félicitations ! Vous êtes venus à bout de la salle ");
+        } else {
+            System.out.println("Dommage, vous êtes morts. Votre aventure s'arrête là pour cette fois !");
+        }
     }
 
     public static void playerTurn(Scanner scanner, Salle salle, Player player) {
@@ -192,10 +245,6 @@ public class Main {
         System.out.println(
                 "Disclaimer ! Vos inputs ne sont pas case sensitive, mais faites attention à l'orthographe \\uD83D\\uDE00");
         mainMenu(scanner);
-
-
-
-
 
     }
 }

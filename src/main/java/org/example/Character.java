@@ -13,6 +13,8 @@ public interface Character {
 
     int getHP();
 
+    int getHPMax();
+
     int getDEF();
 
     int getATK();

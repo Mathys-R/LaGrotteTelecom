@@ -19,7 +19,7 @@ class Salle {
         this.nom = nom;
         this.ameliorationAttaque = ameliorationAttaque;
         this.ameliorationDefense = ameliorationDefense;
-        this.listNPC = new ArrayList<NPC>();
+        this.listNPC = new ArrayList<>();
         grille = creerMatrice(player); // Génération de la grille
         logger.info("Salle '" + nom + "' créée avec succès.");
     }
@@ -35,6 +35,7 @@ class Salle {
     public int getAmeliorationDefense() {
         return ameliorationDefense;
     }
+
     public ArrayList<String>[] getGrille() {
         return grille;
     }
@@ -52,6 +53,7 @@ class Salle {
             logger.info("Affichage du NPC: " + mob);
         }
     }
+
     public NPC getNpcByID(int ID) {
         for (NPC mob : listNPC) {
             if (mob.getID() == ID) {
@@ -60,6 +62,7 @@ class Salle {
         }
         return null;
     }
+
     // Vérifie si la salle contient encore au moins un NPC
     public boolean contientNPC() {
         for (ArrayList<String> row : grille) { // Parcourt chaque ligne de la grille
@@ -119,7 +122,8 @@ class Salle {
             listNPC.add(npc);
 
             // Log l'ajout du NPC à la grille
-            logger.info("NPC ajouté: " + npc.getName() + " à la position (" + npc.getPosX() + ", " + npc.getPosY() + ")");
+            logger.info(
+                    "NPC ajouté: " + npc.getName() + " à la position (" + npc.getPosX() + ", " + npc.getPosY() + ")");
         }
 
         return grille; // Retourne la matrice créée
@@ -181,6 +185,5 @@ class Salle {
                 throw new IllegalStateException("Valeur inattendue : " + type);
         }
     }
-
 
 }
