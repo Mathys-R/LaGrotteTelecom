@@ -1,6 +1,11 @@
 package org.example;
 
+import javax.sound.midi.SysexMessage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 import static java.lang.Math.abs;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -57,7 +62,7 @@ public class Main {
     }
 
     public static void showInformations(Salle salle, Player player) {
-        salle.afficherMatriceAvecCouleurs();
+        salle.afficherMatrice();
         System.out.println(player);
         salle.showNPC();
     }
@@ -178,8 +183,9 @@ public class Main {
     }
 
     public static void playSalle(Scanner scanner, Salle salle, Player player) {
+
         while (salle.contientNPC() && player.isAlive()) {
-            salle.afficherMatriceAvecCouleurs();
+            salle.afficherMatrice();
             playerTurn(scanner, salle, player);
             npcTurn(salle, player);
 
@@ -231,7 +237,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("Students : Louison Prudhomme and Mathys Rosinski");
+        System.out.println("Students : Louison Prudhome and Mathys Rosinski");
 
         CheatMode.setCheatMode(false);
         Scanner scanner = new Scanner(System.in);
