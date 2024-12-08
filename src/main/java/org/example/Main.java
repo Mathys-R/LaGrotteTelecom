@@ -1,9 +1,11 @@
 package org.example;
 
 import javax.sound.midi.SysexMessage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -59,7 +61,7 @@ public class Main {
     }
 
     public static void showInformations(Salle salle, Player player) {
-        salle.afficherMatriceAvecCouleurs();
+        salle.afficherMatrice();
         System.out.println(player);
         salle.showNPC();
     }
@@ -134,7 +136,7 @@ public class Main {
 
     public static void playSalle(Scanner scanner, Salle salle, Player player) {
         while (salle.contientNPC()) {
-            salle.afficherMatriceAvecCouleurs();
+            salle.afficherMatrice();
             playerTurn(scanner, salle, player);
             // npcTurn
 
@@ -182,7 +184,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("Students : Louison Prudhomme and Mathys Rosinski");
+        System.out.println("Students : Louison Prudhome and Mathys Rosinski");
 
         CheatMode.setCheatMode(false);
         Scanner scanner = new Scanner(System.in);
@@ -190,6 +192,10 @@ public class Main {
         System.out.println(
                 "Disclaimer ! Vos inputs ne sont pas case sensitive, mais faites attention à l'orthographe \\uD83D\\uDE00");
         mainMenu(scanner);
+
+
+
+
 
     }
 }

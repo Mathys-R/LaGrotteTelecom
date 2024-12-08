@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
 
 class Salle {
     private String nom;
@@ -10,26 +11,32 @@ class Salle {
     private ArrayList<String>[] grille; // Tableau de lignes (ArrayList<String>)
     private ArrayList<NPC> listNPC;
 
+    // Utilisation du logger de LogControler
+    private static final Logger logger = LogControler.getLogger();
+
     @SuppressWarnings("unchecked")
     public Salle(String nom, int ameliorationAttaque, int ameliorationDefense, Player player) {
         this.nom = nom;
         this.ameliorationAttaque = ameliorationAttaque;
         this.ameliorationDefense = ameliorationDefense;
+        this.listNPC = new ArrayList<NPC>();
         grille = creerMatrice(player); // Génération de la grille
-        this.listNPC = new ArrayList<>();
+        logger.info("Salle '" + nom + "' créée avec succès.");
     }
 
     public String getNom() {
         return nom;
     }
 
-    // Permettrai de donner des boost à certains main character
     public int getAmeliorationAttaque() {
         return ameliorationAttaque;
     }
 
     public int getAmeliorationDefense() {
         return ameliorationDefense;
+    }
+    public ArrayList<String>[] getGrille() {
+        return grille;
     }
 
     @Override
@@ -42,14 +49,34 @@ class Salle {
     public void showNPC() {
         for (NPC mob : listNPC) {
             System.out.println(mob);
+            logger.info("Affichage du NPC: " + mob);
         }
+    }
+    public NPC getNpcByID(int ID) {
+        for (NPC mob : listNPC) {
+            if (mob.getID() == ID) {
+                return mob;
+            }
+        }
+        return null;
+    }
+    // Vérifie si la salle contient encore au moins un NPC
+    public boolean contientNPC() {
+        for (ArrayList<String> row : grille) { // Parcourt chaque ligne de la grille
+            for (String cell : row) { // Parcourt chaque cellule de la ligne
+                // Vérifie si la cellule contient un caractère qui n'est pas un espace
+                if (!cell.equals(" ") && !cell.equals("M")) {
+                    return true; // Retourne vrai si un NPC est trouvé
+                }
+            }
+        }
+        return false; // Retourne faux si aucune cellule n'a de NPC
     }
 
     public ArrayList<NPC> getListNPC() {
         return listNPC;
     }
 
-    // Génère une matrice sous forme d'ArrayList<String>[]
     @SuppressWarnings("unchecked")
     private ArrayList<String>[] creerMatrice(Player player) {
         Random r = new Random();
@@ -69,7 +96,7 @@ class Salle {
             grille[i] = row;
         }
 
-        grille[1].set(0, String.valueOf(player.getNAME().charAt(0)));
+        grille[1].set(0, String.valueOf(player.getName().charAt(0)));
 
         // Création des NPC
         String[] staticNPC = { "M", "A", "R", "D" };
@@ -83,101 +110,58 @@ class Salle {
                 posY = r.nextInt(cols);
             } while (!grille[posX].get(posY).equals(" ")); // Vérifie si la cellule est déjà occupée
 
-            // grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
-
             // Création dynamique et aléatoire
-            NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
-            grille[npc.getPosX()].set(npc.getPosY(), String.valueOf(npc.getName().charAt(0)));
+            NPC npc = creerNPCAleatoire(posX, posY); // Création d'un NPC juste avec les co, le reste random
+            final String RESET = "\u001B[0m"; // Reset color
+            final String RED = "\u001B[31m"; // RED color, sera utilisé pour les NPC méchants
+
+            grille[npc.getPosX()].set(npc.getPosY(), RED + npc.getName().charAt(0) + RESET);
+            listNPC.add(npc);
+
+            // Log l'ajout du NPC à la grille
+            logger.info("NPC ajouté: " + npc.getName() + " à la position (" + npc.getPosX() + ", " + npc.getPosY() + ")");
         }
 
         return grille; // Retourne la matrice créée
     }
 
     public Boolean deplacementCharacter(Character target, int newPosX, int newPosY) {
-        if (grille[newPosX].get(newPosY).equals(" ")) {
-            grille[newPosX].set(newPosY, target.getNAME());
-            grille[target.getPosX()].set(target.getPosY(), " ");
+        if (grille[newPosX].get(newPosY).equals(" ")) { // Case vide
+            grille[newPosX].set(newPosY, String.valueOf(target.getName().charAt(0))); // Déplace le caractère
+            grille[target.getPosX()].set(target.getPosY(), " "); // Libère l'ancienne case
             target.setPosX(newPosX);
             target.setPosY(newPosY);
+            logger.info(target.getName() + " a été déplacé vers (" + newPosX + ", " + newPosY + ")");
             return true;
         } else {
+            logger.warning("Déplacement échoué: Case (" + newPosX + ", " + newPosY + ") déjà occupée.");
             return false;
         }
     }
 
-    public NPC getNpcByID(int ID) {
-        for (NPC mob : listNPC) {
-            if (mob.getID() == ID) {
-                return mob;
-            }
-        }
-        return null;
-    }
-
     // Méthode pour afficher la grille
     public void afficherMatrice() {
+        refreshGrille();
+        logger.info("Affichage de la grille pour la salle: " + getNom());
         System.out.println("Positionnement des personnages dans " + getNom());
         for (ArrayList<String> row : grille) {
             System.out.println(row);
         }
     }
 
-    // Vérifie si la salle contient encore au moins un NPC
-    public boolean contientNPC() {
-        for (ArrayList<String> row : grille) { // Parcourt chaque ligne de la grille
-            for (String cell : row) { // Parcourt chaque cellule de la ligne
-                // Vérifie si la cellule contient un caractère qui n'est pas un espace
-                if (!cell.equals(" ") && !cell.equals("M")) {
-                    return true; // Retourne vrai si un NPC est trouvé
-                }
+    public void refreshGrille() {
+        // Parcourir la liste des NPC pour trouver ceux qui sont morts
+        ArrayList<NPC> npcsMorts = new ArrayList<>();
+        for (NPC npc : listNPC) {
+            if (!npc.isAlive()) { // Vérifie si le NPC est mort
+                npcsMorts.add(npc);
             }
         }
-        return false; // Retourne faux si aucune cellule n'a de NPC
-    }
-
-    // Vide la salle de ses NPCs sauf "M"
-    public void viderSalleSaufM() {
-        for (ArrayList<String> row : grille) { // Parcourt chaque ligne de la grille
-            for (int i = 0; i < row.size(); i++) { // Parcourt chaque cellule de la ligne
-                // Si la cellule ne contient pas "M" et n'est pas vide
-                if (!row.get(i).equals(" ") && !row.get(i).equals("M")) {
-                    row.set(i, " "); // Remplace le contenu par une cellule vide
-                }
-            }
-        }
-    }
-
-    // Permet de mettre en avant des personnages
-    public void afficherMatriceAvecCouleurs() {
-
-        // Codes ANSI pour les couleurs
-        final String RESET = "\u001B[0m"; // Reset color
-        final String BLUE = "\u001B[34m"; // Blue color, sera utilisé pour le main character
-        final String RED = "\u001B[31m"; // Red color, pourra être utilisé pour un Boss
-
-        System.out.println("Positionnement des personnages dans " + getNom());
-
-        for (ArrayList<String> row : grille) {
-            StringBuilder coloredRow = new StringBuilder("["); // Commence une ligne formatée
-
-            for (int i = 0; i < row.size(); i++) {
-                String cell = row.get(i);
-
-                // Applique des couleurs aux personnages spécifiques
-                if (cell.equals("M")) {
-                    coloredRow.append(BLUE).append(cell).append(RESET);
-                } else {
-                    coloredRow.append(cell); // Cellule vide ou non colorée
-                }
-
-                // Ajoute une virgule si ce n'est pas la dernière cellule
-                if (i < row.size() - 1) {
-                    coloredRow.append(", ");
-                }
-            }
-
-            coloredRow.append("]"); // Termine la ligne formatée
-            System.out.println(coloredRow); // Affiche la ligne
+        // Supprimer les NPC morts de la liste et de la grille
+        for (NPC mort : npcsMorts) {
+            grille[mort.getPosX()].set(mort.getPosY(), " ");
+            listNPC.remove(mort); // Supprimer le mort de la liste des NPC
+            logger.info(mort.getName() + " est mort et a été retiré de la grille.");
         }
     }
 
@@ -197,4 +181,6 @@ class Salle {
                 throw new IllegalStateException("Valeur inattendue : " + type);
         }
     }
+
+
 }

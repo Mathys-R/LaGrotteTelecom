@@ -8,7 +8,8 @@ public class Troll extends NPC implements Character{
     private static final String[] NOMS_TROLL = {"Gourmant", "Paresseux", "Costaud", "Grogon"};
 
     public Troll(int posX, int posY) {
-        super(genererNomAleatoire(), 1000, 20, 50, 1,posX, posY);
+
+        super(genererNomAleatoire(), 100, 20, 50, 1,posX, posY);
     }
     // Méthode statique pour générer un nom de Troll aléatoire
     private static String genererNomAleatoire() {

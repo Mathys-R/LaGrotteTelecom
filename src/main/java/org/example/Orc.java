@@ -9,7 +9,7 @@ public class Orc extends NPC implements Character {
 
     public Orc(int posX, int posY) {
         // Appelle le constructeur parent avec un nom aléatoire et des statistiques spécifiques
-        super(genererNomAleatoire(), 1200, 40, 60, 2, posX, posY);
+        super(genererNomAleatoire(), 200, 40, 60, 2, posX, posY);
     }
 
     // Méthode statique pour générer un nom d'Orc aléatoire

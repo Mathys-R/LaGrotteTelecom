@@ -4,7 +4,6 @@ import static java.lang.Math.abs;
 
 public abstract class NPC implements Character {
     static private int LastID = 0;
-    private final String NAME;
     private final int ID;
     private String name;
     private static int hpMax;
@@ -19,7 +18,6 @@ public abstract class NPC implements Character {
         this.ID = ++LastID;
         this.name = name;
         this.hpMax = hpMax;
-        this.NAME = NAME;
         this.HP = hpMax;
         this.DEF = DEF;
         this.ATK = ATK;
@@ -33,9 +31,6 @@ public abstract class NPC implements Character {
         return HP;
     }
 
-    public String getNAME() {
-        return NAME;
-    }
 
     public int getDEF() {
         return DEF;
@@ -98,8 +93,8 @@ public abstract class NPC implements Character {
     }
 
     public void heal(int heal) {
-        if (heal + this.HP > hpMax) {
-            this.HP = hpMax;
+        if (heal > 0) { // Vérifie que la valeur de heal est positive
+            this.HP = Math.min(this.HP + heal, hpMax);
         }
     }
 
@@ -125,4 +120,12 @@ public abstract class NPC implements Character {
                 '}';
     }
 
+    public void setAlive(boolean b) {
+        if (b == true) {
+            this.HP = 1;
+        }
+        else {
+            this.HP = 0;
+        }
+    }
 }

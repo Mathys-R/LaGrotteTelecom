@@ -23,7 +23,7 @@ public interface Character {
 
     int getPosY();
 
-    String getNAME();
+    String getName();
 
     void setPosX(int posX);
 
