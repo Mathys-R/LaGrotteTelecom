@@ -4,10 +4,9 @@ import static java.lang.Math.abs;
 
 public abstract class NPC implements Character {
     static private int LastID = 0;
-    private final String NAME;
     private final int ID;
     private String name;
-    private static int hpMax;
+    private int hpMax;
     private int HP;
     private int DEF;
     private int ATK;
@@ -19,7 +18,6 @@ public abstract class NPC implements Character {
         this.ID = ++LastID;
         this.name = name;
         this.hpMax = hpMax;
-        this.NAME = NAME;
         this.HP = hpMax;
         this.DEF = DEF;
         this.ATK = ATK;
@@ -28,13 +26,16 @@ public abstract class NPC implements Character {
         this.posY = posY;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
+
     public int getHP() {
         return HP;
     }
 
-    public String getNAME() {
-        return NAME;
+    public int getHPMax() {
+        return hpMax;
     }
 
     public int getDEF() {
@@ -61,7 +62,10 @@ public abstract class NPC implements Character {
         return posY;
     }
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setHP(int HP) {
         this.HP = HP;
     }

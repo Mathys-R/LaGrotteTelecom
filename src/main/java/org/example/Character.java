@@ -13,6 +13,8 @@ public interface Character {
 
     int getHP();
 
+    int getHPMax();
+
     int getDEF();
 
     int getATK();
@@ -23,7 +25,7 @@ public interface Character {
 
     int getPosY();
 
-    String getNAME();
+    String getName();
 
     void setPosX(int posX);
 

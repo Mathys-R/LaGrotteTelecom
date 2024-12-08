@@ -69,7 +69,7 @@ class Salle {
             grille[i] = row;
         }
 
-        grille[1].set(0, String.valueOf(player.getNAME().charAt(0)));
+        grille[1].set(0, String.valueOf(player.getName().charAt(0)));
 
         // Création des NPC
         String[] staticNPC = { "M", "A", "R", "D" };
@@ -86,7 +86,7 @@ class Salle {
             // grille[posX].set(posY, staticNPC[i]); // Place un staticNPC
 
             // Création dynamique et aléatoire
-            NPC npc = creerNPCAleatoire(posX,posY); // Création d'un NPC justa avec les co, le reste random
+            NPC npc = creerNPCAleatoire(posX, posY); // Création d'un NPC justa avec les co, le reste random
             grille[npc.getPosX()].set(npc.getPosY(), String.valueOf(npc.getName().charAt(0)));
         }
 
@@ -95,7 +95,8 @@ class Salle {
 
     public Boolean deplacementCharacter(Character target, int newPosX, int newPosY) {
         if (grille[newPosX].get(newPosY).equals(" ")) {
-            grille[newPosX].set(newPosY, target.getNAME());
+            // A modif pour l'initial
+            grille[newPosX].set(newPosY, target.getName());
             grille[target.getPosX()].set(target.getPosY(), " ");
             target.setPosX(newPosX);
             target.setPosY(newPosY);
