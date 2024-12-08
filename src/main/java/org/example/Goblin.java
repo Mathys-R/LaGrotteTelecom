@@ -9,7 +9,7 @@ public class Goblin extends NPC implements Character {
 
     public Goblin(int posX, int posY) {
         // Appelle le constructeur parent avec un nom aléatoire et des statistiques spécifiques
-        super(genererNomAleatoire(), 500, 10, 30, 1, posX, posY);
+        super(genererNomAleatoire(), 50, 10, 30, 1, posX, posY);
     }
 
     // Méthode statique pour générer un nom de Goblin aléatoire

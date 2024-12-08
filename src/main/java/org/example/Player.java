@@ -3,7 +3,7 @@ package org.example;
 import static java.lang.Math.abs;
 
 public class Player implements Character {
-    private final String NAME;
+    private final String name;
     private final int hpMax;
     private int HP;
     private int DEF;
@@ -13,7 +13,7 @@ public class Player implements Character {
     private int posY;
 
     public Player(String NAME) {
-        this.NAME = NAME;
+        this.name = NAME;
         this.posX = 0;
         this.posY = 0;
 
@@ -32,8 +32,8 @@ public class Player implements Character {
         }
     }
 
-    public String getNAME() {
-        return NAME;
+    public String getName() {
+        return name;
     }
 
     public int getHP() {
@@ -113,7 +113,7 @@ public class Player implements Character {
 
     @Override
     public String toString() {
-        return NAME + "{" +
+        return name + "{" +
                 ", hpMax=" + hpMax +
                 ", HP=" + HP +
                 ", DEF=" + DEF +
