@@ -10,11 +10,12 @@ class Salle {
     private int ameliorationDefense;
     private ArrayList<String>[] grille; // Tableau de lignes (ArrayList<String>)
     private ArrayList<NPC> listNPC;
+    private int sizeX;
+    private int sizeY;
 
     // Utilisation du logger de LogControler
     private static final Logger logger = LogControler.getLogger();
 
-    @SuppressWarnings("unchecked")
     public Salle(String nom, int ameliorationAttaque, int ameliorationDefense, Player player) {
         this.nom = nom;
         this.ameliorationAttaque = ameliorationAttaque;
@@ -88,6 +89,9 @@ class Salle {
         int rows = 3;
         int cols = 6 + r.nextInt(3);
 
+        this.sizeX = cols;
+        this.sizeY = rows;
+
         ArrayList<String>[] grille = new ArrayList[rows]; // Tableau de lignes
 
         // Initialisation de la grille avec des cellules vides
@@ -101,8 +105,6 @@ class Salle {
 
         grille[1].set(0, String.valueOf(player.getName().charAt(0)));
 
-        // Création des NPC
-        String[] staticNPC = { "M", "A", "R", "D" };
         // Générer un nombre aléatoire de NPC entre 2 et 4
         int nombrePersonnages = r.nextInt(3) + 2;
 
@@ -130,15 +132,19 @@ class Salle {
     }
 
     public Boolean deplacementCharacter(Character target, int newPosX, int newPosY) {
-        if (grille[newPosX].get(newPosY).equals(" ")) { // Case vide
-            grille[newPosX].set(newPosY, String.valueOf(target.getName().charAt(0))); // Déplace le caractère
-            grille[target.getPosX()].set(target.getPosY(), " "); // Libère l'ancienne case
-            target.setPosX(newPosX);
-            target.setPosY(newPosY);
-            logger.info(target.getName() + " a été déplacé vers (" + newPosX + ", " + newPosY + ")");
-            return true;
+        if (newPosX < this.sizeX && newPosX >= 0 && newPosY >= 0 && newPosY < this.sizeY) {
+            if (grille[newPosY].get(newPosX).equals(" ")) { // Case vide
+                grille[newPosY].set(newPosX, String.valueOf(target.getName().charAt(0))); // Déplace le caractère
+                grille[target.getPosX()].set(target.getPosY(), " "); // Libère l'ancienne case
+                target.setPosX(newPosX);
+                target.setPosY(newPosY);
+                logger.info(target.getName() + " a été déplacé vers (" + newPosX + ", " + newPosY + ")");
+                return true;
+            } else {
+                logger.warning("Déplacement échoué: Case (" + newPosX + ", " + newPosY + ") déjà occupée.");
+                return false;
+            }
         } else {
-            logger.warning("Déplacement échoué: Case (" + newPosX + ", " + newPosY + ") déjà occupée.");
             return false;
         }
     }
@@ -147,7 +153,7 @@ class Salle {
     public void afficherMatrice() {
         refreshGrille();
         logger.info("Affichage de la grille pour la salle: " + getNom());
-        System.out.println("Positionnement des personnages dans " + getNom());
+        System.out.println("\nPositionnement des personnages dans " + getNom());
         for (ArrayList<String> row : grille) {
             System.out.println(row);
         }

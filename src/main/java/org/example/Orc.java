@@ -2,13 +2,14 @@ package org.example;
 
 import java.util.Random;
 
-public class Orc extends NPC implements Character {
+public class Orc extends NPC {
 
     // Liste des noms possibles pour les orques
-    private static final String[] NOMS_ORC = {"Brutal", "Sanguinaire", "Féroce", "Implacable", "Terrifiant"};
+    private static final String[] NOMS_ORC = { "Brutal", "Sanguinaire", "Féroce", "Implacable", "Terrifiant" };
 
     public Orc(int posX, int posY) {
-        // Appelle le constructeur parent avec un nom aléatoire et des statistiques spécifiques
+        // Appelle le constructeur parent avec un nom aléatoire et des statistiques
+        // spécifiques
         super(genererNomAleatoire(), 200, 40, 60, 2, posX, posY);
     }
 

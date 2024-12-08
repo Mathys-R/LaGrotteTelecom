@@ -1,11 +1,6 @@
 package org.example;
 
-import javax.sound.midi.SysexMessage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Logger;
 import static java.lang.Math.abs;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -18,7 +13,7 @@ public class Main {
 
     public static void closeProgram(Scanner scanner) {
         System.out.println(
-                "Merci d'avoir joué, si vous souhaitez revenir sur le jeu, il va falloir relancer le programme \uD83D\uDE00 ");
+                "Merci d'avoir joué, si vous souhaitez revenir sur le jeu, il va falloir relancer le programme ");
         scanner.close();
         System.exit(0);
     }
@@ -48,12 +43,13 @@ public class Main {
 
     public static void deplacementJoueur(Scanner scanner, Salle salle, Player player) {
         Boolean hasMoved = false;
+
         while (!hasMoved) {
             System.out.println("Veuillez indiquer la nouvelle coordonnée X de votre personnage :");
             int newPosX = getIntValue(scanner);
             System.out.println("Veuillez indiquer la nouvelle coordonnée Y de votre personnage :");
             int newPosY = getIntValue(scanner);
-            if (salle.deplacementCharacter(player, newPosX, newPosY)) {
+            if (salle.deplacementCharacter(player, newPosY, newPosX)) {
                 hasMoved = true;
             } else {
                 System.out.println("Les coordonnées que vous avez saisies ne peuvent être atteintes !\n");
@@ -88,6 +84,7 @@ public class Main {
             newY += (deltaY > 0) ? 1 : -1;
         }
 
+        System.out.println(mob.getName() + " New X " + newX + " New Y " + newY);
         // Vérification et application du déplacement
         if (salle.deplacementCharacter(mob, newX, newY)) {
             System.out.println(mob.getName() + " s'est déplacé vers (" + newX + ", " + newY + ")");
@@ -185,12 +182,8 @@ public class Main {
     public static void playSalle(Scanner scanner, Salle salle, Player player) {
 
         while (salle.contientNPC() && player.isAlive()) {
-            salle.afficherMatrice();
             playerTurn(scanner, salle, player);
             npcTurn(salle, player);
-
-            System.out.println("Sortie");
-            closeProgram(scanner);
         }
         if (player.isAlive()) {
             System.out.println("Félicitations ! Vous êtes venus à bout de la salle ");
@@ -203,6 +196,7 @@ public class Main {
         Boolean hasPlayed = false;
 
         while (!hasPlayed) {
+            salle.afficherMatrice();
             System.out.println("C'est à votre tour ! Que souhaitez vous faire ?\n" +
                     "\t - Attaquer\n" +
                     "\t - Heal\n" +
@@ -237,13 +231,13 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("Students : Louison Prudhome and Mathys Rosinski");
+        System.out.println("\nStudents : Louison Prudhome and Mathys Rosinski");
+        System.out.println(
+                "Disclaimer ! Vos inputs ne sont pas case sensitive, mais faites attention à l'orthographe \n");
 
         CheatMode.setCheatMode(false);
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bienvenue à la Grotte Télécom !");
-        System.out.println(
-                "Disclaimer ! Vos inputs ne sont pas case sensitive, mais faites attention à l'orthographe \\uD83D\\uDE00");
         mainMenu(scanner);
 
     }
