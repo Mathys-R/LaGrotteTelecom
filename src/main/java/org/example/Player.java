@@ -1,47 +1,88 @@
 package org.example;
 
 import static java.lang.Math.abs;
+import java.util.logging.Logger;
 
+/**
+ * La classe {@code Player} représente un personnage contrôlé par le joueur.
+ * Elle implémente l'interface {@code Character} et possède des caractéristiques telles que
+ * les points de vie, la défense, l'attaque, la portée d'attaque, et la position sur la carte.
+ * Un mode "cheat" permet de booster ces caractéristiques pour le joueur.
+ *
+ * Un logger est utilisé pour enregistrer les événements majeurs comme les attaques, les dégâts subis,
+ * les soins et les changements d'état du joueur.
+ */
 public class Player implements Character {
+
+    /** Nom du joueur. */
     private final String name;
-    private final int hpMax;
-    private int HP;
+
+    /** Points de vie maximum du joueur. */
+    private final int HP_MAX;
+
+    /** Points de vie actuels du joueur. */
+    private int hp;
+
+    /** Défense du joueur. */
     private int DEF;
+
+    /** Attaque du joueur. */
     private int ATK;
+
+    /** Portée d'attaque du joueur. */
     private int range;
+
+    /** Position X du joueur sur la carte. */
     private int posX;
+
+    /** Position Y du joueur sur la carte. */
     private int posY;
 
+    /** Logger utilisé pour enregistrer les actions du joueur. */
+    private static final Logger logger = LogControler.getLogger();
+
+    /**
+     * Constructeur pour créer un joueur avec des caractéristiques basées sur le mode cheat.
+     * Si le mode cheat est activé, les points de vie, la défense, l'attaque et la portée sont
+     * considérablement augmentés. Sinon, le joueur a des valeurs par défaut.
+     *
+     * @param name Le nom du joueur.
+     */
     public Player(String name) {
         this.name = name;
         this.posX = 0;
         this.posY = 1;
 
         if (CheatMode.isCheatMode()) {
-            this.hpMax = 10000; // Mode cheat : HP boostés
-            this.HP = 10000;
+            // Mode cheat : caractéristiques boostées
+            this.HP_MAX = 10000;
+            this.hp = 10000;
             this.DEF = 10000;
             this.ATK = 10000;
             this.range = 10000;
+            logger.info(name + " a activé le mode cheat avec des caractéristiques boostées.");
         } else {
-            this.hpMax = 100; // Valeurs par défaut
-            this.HP = 100;
+            // Valeurs par défaut
+            this.HP_MAX = 100;
+            this.hp = 100;
             this.DEF = 10;
             this.ATK = 15;
             this.range = 2;
+            logger.info(name + " a été créé avec les caractéristiques par défaut.");
         }
     }
 
+    // Getters et setters pour les attributs
     public String getName() {
         return name;
     }
 
-    public int getHP() {
-        return HP;
+    public int getHp() {
+        return hp;
     }
 
-    public int getHPMax() {
-        return hpMax;
+    public int getHP_MAX() {
+        return HP_MAX;
     }
 
     public int getDEF() {
@@ -64,61 +105,106 @@ public class Player implements Character {
         return posY;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
+    public void setHp(int HP) {
+        this.hp = HP;
+        logger.info(name + " a ses points de vie mis à jour : " + this.hp);
     }
 
     public void setDEF(int DEF) {
         this.DEF = DEF;
+        logger.info(name + " a sa défense mise à jour : " + this.DEF);
     }
 
     public void setATK(int ATK) {
         this.ATK = ATK;
+        logger.info(name + " a son attaque mise à jour : " + this.ATK);
     }
 
     public void setRange(int range) {
         this.range = range;
+        logger.info(name + " a sa portée mise à jour : " + this.range);
     }
 
     public void setPosX(int posX) {
         this.posX = posX;
+        logger.info(name + " a sa position X mise à jour : " + this.posX);
     }
 
     public void setPosY(int posY) {
         this.posY = posY;
+        logger.info(name + " a sa position Y mise à jour : " + this.posY);
     }
 
+    /**
+     * Applique les dégâts au joueur, réduits en fonction de la défense.
+     *
+     * @param damage Les dégâts à infliger au joueur.
+     */
     public void takeDamage(int damage) {
-        this.HP -= (damage * (1 - this.getDEF()/(this.getDEF()+50)));
+        this.hp -= (damage * (1 - this.getDEF() / (this.getDEF() + 50.0)));
+        logger.info(name + " a pris " + damage + " dégâts, il lui reste " + this.hp + " HP.");
     }
 
+    /**
+     * Effectue une attaque sur une cible si elle est dans la portée du joueur.
+     * La distance est calculée en fonction des positions X et Y.
+     *
+     * @param damage Les dégâts de l'attaque.
+     * @param target La cible de l'attaque.
+     */
     public void attack(int damage, Character target) {
         int distance = abs((target.getPosX() + target.getPosY()) - (getPosX() + getPosY()));
         if (distance >= 0 && distance <= range) {
             target.takeDamage(damage);
-        } else
+            logger.info(name + " attaque " + target.getName() + " pour " + damage + " dégâts.");
+        } else {
+            logger.warning(name + " a tenté d'attaquer " + target.getName() + " mais la cible est hors de portée.");
             System.out.println("La cible est hors de portée !");
-    }
-
-    public void heal(int heal) {
-        if (heal > 0) { // Vérifie que la valeur de heal est positive
-            this.HP = Math.min(this.HP + heal, hpMax);
         }
     }
 
+    /**
+     * Soigne le joueur en lui donnant des points de vie supplémentaires,
+     * sans dépasser ses points de vie maximum.
+     *
+     * @param heal Le montant de points de vie à restaurer.
+     */
+    public void heal(int heal) {
+        if (heal > 0) {
+            this.hp = Math.min(this.hp + heal, HP_MAX);
+            logger.info(name + " a été soigné de " + heal + " points de vie. HP actuels : " + this.hp);
+        } else {
+            logger.warning(name + " a tenté de se soigner avec une valeur négative ou nulle.");
+        }
+    }
+
+    /**
+     * Augmente la défense du joueur de 5 points en activant un bouclier.
+     */
     public void shield() {
         this.DEF += 5;
+        logger.info(name + " a activé un bouclier, sa défense est maintenant de " + this.DEF);
     }
 
+    /**
+     * Vérifie si le joueur est toujours en vie.
+     *
+     * @return {@code true} si le joueur est en vie, {@code false} sinon.
+     */
     public boolean isAlive() {
-        return HP > 0;
+        return hp > 0;
     }
 
+    /**
+     * Retourne une représentation sous forme de chaîne de caractères du joueur.
+     *
+     * @return Une chaîne représentant le joueur.
+     */
     @Override
     public String toString() {
         return name + "{" +
-                ", hpMax=" + hpMax +
-                ", HP=" + HP +
+                ", hpMax=" + HP_MAX +
+                ", HP=" + hp +
                 ", DEF=" + DEF +
                 ", ATK=" + ATK +
                 ", range=" + range +
