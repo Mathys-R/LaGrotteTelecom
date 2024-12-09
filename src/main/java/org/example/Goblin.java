@@ -2,13 +2,14 @@ package org.example;
 
 import java.util.Random;
 
-public class Goblin extends NPC implements Character {
+public class Goblin extends NPC {
 
     // Liste des noms possibles pour les gobelins
-    private static final String[] NOMS_GOBLIN = {"Filou", "Rusé", "Grincheux", "Minaud", "Perfide"};
+    private static final String[] NOMS_GOBLIN = { "Filou", "Rusé", "Grincheux", "Minaud", "Perfide" };
 
     public Goblin(int posX, int posY) {
-        // Appelle le constructeur parent avec un nom aléatoire et des statistiques spécifiques
+        // Appelle le constructeur parent avec un nom aléatoire et des statistiques
+        // spécifiques
         super(genererNomAleatoire(), 50, 10, 30, 1, posX, posY);
     }
 
@@ -19,4 +20,3 @@ public class Goblin extends NPC implements Character {
         return nom;
     }
 }
-
