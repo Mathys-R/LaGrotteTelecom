@@ -8,6 +8,6 @@ public class PlayerTest {
     public void testTakeDammage() {
         Player tom = new Player("tom");
         tom.takeDamage(10);
-        assertEquals(90, tom.getHP());
+        assertEquals(100 - (10 * (1 - 10/(10+50))), tom.getHP());
     }
 }

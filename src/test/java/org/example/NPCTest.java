@@ -42,7 +42,7 @@ public class NPCTest {
     public void testTakeDamage() {
         NPC npc = new NPC("Goblin", 100, 10, 15, 5, 2, 3) {};
         npc.takeDamage(20);
-        assertEquals(80, npc.getHP());
+        assertEquals(100 - (20 * (1 - 10/(10+50))), npc.getHP());
         npc.takeDamage(80);
         assertEquals(0, npc.getHP(), "Les HP ne doivent pas devenir négatifs.");
     }
