@@ -44,12 +44,13 @@ public class PlayerTest {
     }
 
     @Test
-    public void testTakeDamage() {
-        player.takeDamage(20);
-        assertEquals(80, player.getHP());
+    public void testTakeDammage() {
+        Player tom = new Player("tom");
+        tom.takeDamage(10);
+        assertEquals(100 - (10 * (1 - 10/(10+50))), tom.getHP());
 
-        player.takeDamage(100);
-        assertEquals(-20, player.getHP()); // Gère les HP négatifs (optionnel)
+        player.takeDamage(1000);
+        assertEquals(1000 - (10 * (1 - 10/(10+50)), player.getHP()); // Gère les HP négatifs (optionnel)
     }
 
     @Test

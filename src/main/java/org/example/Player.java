@@ -89,7 +89,7 @@ public class Player implements Character {
     }
 
     public void takeDamage(int damage) {
-        this.HP -= damage;
+        this.HP -= (damage * (1 - this.getDEF()/(this.getDEF()+50)));
     }
 
     public void attack(int damage, Character target) {
