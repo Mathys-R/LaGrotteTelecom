@@ -59,8 +59,9 @@ public class NPCTest {
     public void testTakeDamage() {
         NPC npc = new NPC("Goblin", 100, 10, 15, 5, 2, 3) {};
         npc.takeDamage(20);
-        assertEquals(100 - (20 * (1 - 10/(10+50))), npc.getHp());
-        npc.takeDamage(80);
+        int damageTaken = (int) (20 * (1 - (10 / (10 + 50.0))));
+        assertEquals(100 - damageTaken, npc.getHp());
+        npc.takeDamage(800);
         assertEquals(0, npc.getHp(), "Les HP ne doivent pas devenir négatifs.");
     }
 
@@ -73,7 +74,8 @@ public class NPCTest {
         NPC npc = new NPC("Goblin", 100, 10, 15, 5, 2, 3) {};
         npc.takeDamage(50);
         npc.heal(30);
-        assertEquals(80, npc.getHp());
+        int damageTaken = (int) (50 * (1 - (10 / (10 + 50.0))));
+        assertEquals(100-damageTaken+30, npc.getHp());
         npc.heal(50);
         assertEquals(100, npc.getHp(), "Les HP ne doivent pas dépasser hpMax.");
     }
@@ -99,7 +101,8 @@ public class NPCTest {
         NPC npc = new NPC("Goblin", 100, 10, 15, 5, 2, 3) {};
 
         npc.attack(20, target);
-        assertEquals(80, target.getHp());
+        int damageTaken = (int) (20 * (1 - (5 / (5 + 50.0))));
+        assertEquals(100 - damageTaken, target.getHp());
     }
 
     /**

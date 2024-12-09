@@ -26,7 +26,7 @@ public class Goblin extends NPC {
      */
     public Goblin(int posX, int posY) {
         // Appelle le constructeur parent avec un nom aléatoire et des statistiques
-        super(genererNomAleatoire(), 50, 10, 30, 1, posX, posY);
+        super(genererNomAleatoire(), 50, 10, 25, 3, posX, posY);
 
         // Log de la création du Goblin
         logger.info("Un Goblin a été créé avec le nom : " + this.getName() +

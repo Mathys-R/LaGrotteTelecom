@@ -118,9 +118,12 @@ public abstract class NPC implements Character {
      * @param damage Les dégâts à infliger.
      */
     public void takeDamage(int damage) {
-        double reduction = 1 - (this.getDEF() / (this.getDEF() + 50.0));
-        int damageTaken = (int)(damage * reduction);
-        this.hp -= damageTaken;
+        int damageTaken = (int) (damage * (1 - (this.getDEF() / (this.getDEF() + 50.0))));
+        if (this.hp-damageTaken<0){
+            setHp(0);
+        }else {
+            setHp(this.hp-damageTaken);
+        }
         logger.info(this.name + " a pris " + damageTaken + " dégâts, HP restants: " + this.hp);
     }
     /**

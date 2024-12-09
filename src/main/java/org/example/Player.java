@@ -63,10 +63,10 @@ public class Player implements Character {
             logger.info(name + " a activé le mode cheat avec des caractéristiques boostées.");
         } else {
             // Valeurs par défaut
-            this.HP_MAX = 100;
-            this.hp = 100;
-            this.DEF = 10;
-            this.ATK = 15;
+            this.HP_MAX = 300;
+            this.hp = 300;
+            this.DEF = 20;
+            this.ATK = 50;
             this.range = 2;
             logger.info(name + " a été créé avec les caractéristiques par défaut.");
         }
@@ -141,8 +141,13 @@ public class Player implements Character {
      * @param damage Les dégâts à infliger au joueur.
      */
     public void takeDamage(int damage) {
-        this.hp -= (damage * (1 - this.getDEF() / (this.getDEF() + 50.0)));
-        logger.info(name + " a pris " + damage + " dégâts, il lui reste " + this.hp + " HP.");
+        int damageTaken = (int) (damage * (1 - (this.getDEF() / (this.getDEF() + 50.0))));
+        if (this.hp-damageTaken<0){
+            setHp(0);
+        }else {
+            setHp(this.hp-damageTaken);
+        }
+        logger.info(this.name + " a pris " + damageTaken + " dégâts, HP restants: " + this.hp);
     }
 
     /**

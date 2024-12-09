@@ -81,7 +81,7 @@ public class SalleTest {
     }
 
     /**
-     * Teste la méthode {@link Salle#creerMatrice()}.
+     * Teste la méthode {@link Salle#creerMatrice(Player)}.
      * Vérifie que la grille est correctement créée et que le nombre de NPC sur la grille
      * correspond au nombre de NPC dans la liste.
      */

@@ -26,7 +26,7 @@ public class Orc extends NPC {
      */
     public Orc(int posX, int posY) {
         // Appelle le constructeur parent avec un nom aléatoire et des statistiques
-        super(genererNomAleatoire(), 200, 40, 60, 2, posX, posY);
+        super(genererNomAleatoire(), 150, 15, 60, 1, posX, posY);
 
         // Log de la création de l'Orc
         logger.info("Un Orc a été créé avec le nom : " + this.getName() +

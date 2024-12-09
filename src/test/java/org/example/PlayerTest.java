@@ -29,10 +29,10 @@ public class PlayerTest {
     @Test
     public void testConstructorAndGetters() {
         assertEquals("TestPlayer", player.getName());
-        assertEquals(100, player.getHP_MAX());
-        assertEquals(100, player.getHp());
-        assertEquals(10, player.getDEF());
-        assertEquals(15, player.getATK());
+        assertEquals(300, player.getHP_MAX());
+        assertEquals(300, player.getHp());
+        assertEquals(20, player.getDEF());
+        assertEquals(50, player.getATK());
         assertEquals(2, player.getRange());
         assertEquals(0, player.getPosX());
         assertEquals(1, player.getPosY());
@@ -67,7 +67,8 @@ public class PlayerTest {
     public void testTakeDammage() {
         Player tom = new Player("tom");
         tom.takeDamage(10);
-        assertEquals(100 - (10 * (1 - 10/(10+50))), tom.getHp());
+        int damageTaken = (int) (10 * (1 - (20 / (20 + 50.0))));
+        assertEquals(300 - damageTaken, tom.getHp());
 
         // player.takeDamage(1000);
         // assertEquals(1000 - (10 * (1 - 10/(10+50))), player.getHp()); // Gère les HP négatifs (optionnel)
@@ -84,7 +85,7 @@ public class PlayerTest {
         assertEquals(80, player.getHp());
 
         player.heal(50); // Ne peut pas dépasser le maximum
-        assertEquals(100, player.getHp());
+        assertEquals(130, player.getHp());
     }
 
     /**
@@ -94,7 +95,7 @@ public class PlayerTest {
     @Test
     public void testIsAlive() {
         assertTrue(player.isAlive());
-        player.takeDamage(100);
+        player.takeDamage(1000);
         assertFalse(player.isAlive());
     }
 
@@ -112,7 +113,8 @@ public class PlayerTest {
         player.setPosY(0);
         player.attack(10, target);
 
-        assertEquals(90, target.getHp()); // La cible reçoit les dégâts
+        int damageTaken = (int) (10 * (1 - (20 / (20 + 50.0))));
+        assertEquals(300-damageTaken, target.getHp()); // La cible reçoit les dégâts
     }
 
     /**
@@ -129,7 +131,7 @@ public class PlayerTest {
         player.setPosY(0);
         player.attack(10, target);
 
-        assertEquals(100, target.getHp()); // La cible ne reçoit aucun dégât
+        assertEquals(300, target.getHp()); // La cible ne reçoit aucun dégât
     }
 
     /**
@@ -139,6 +141,6 @@ public class PlayerTest {
     @Test
     public void testShield() {
         player.shield();
-        assertEquals(15, player.getDEF());
+        assertEquals(25, player.getDEF());
     }
 }

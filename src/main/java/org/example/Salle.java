@@ -8,7 +8,7 @@ import java.util.logging.Logger;
  * Classe représentant une salle dans l'ensemble de la carte du jeu
  * Une salle contient une grille avec plusieurs NPCs, et des informations de positionnement.
  */
-class Salle {
+public class Salle {
 
     private String nom;
     private ArrayList<String>[] grille; // Tableau représentant la grille de la salle
@@ -125,7 +125,7 @@ class Salle {
      * @return Matrice représentant la salle.
      */
     @SuppressWarnings("unchecked")
-    private ArrayList<String>[] creerMatrice(Player player) {
+    public ArrayList<String>[] creerMatrice(Player player) {
         Random r = new Random();
         final String RESET = "\u001B[0m";
         final String RED = "\u001B[31m";

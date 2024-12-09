@@ -24,7 +24,7 @@ public class Troll extends NPC {
      * @param posY La position Y du Troll sur la carte.
      */
     public Troll(int posX, int posY) {
-        super(genererNomAleatoire(), 100, 20, 50, 1, posX, posY);
+        super(genererNomAleatoire(), 200, 35, 30, 1, posX, posY);
 
         // Log de la création du Troll
         logger.info("Un Troll a été créé avec le nom : " + this.getName() +
