@@ -15,7 +15,7 @@ public class Player implements Character {
     public Player(String name) {
         this.name = name;
         this.posX = 0;
-        this.posY = 0;
+        this.posY = 1;
 
         if (CheatMode.isCheatMode()) {
             this.hpMax = 10000; // Mode cheat : HP boostés

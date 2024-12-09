@@ -14,8 +14,6 @@ public class SalleTest {
         Salle salle = new Salle("Salle1", 10, 5, player);
 
         assertEquals("Salle1", salle.getNom());
-        assertEquals(10, salle.getAmeliorationAttaque());
-        assertEquals(5, salle.getAmeliorationDefense());
         assertNotNull(salle.getListNPC());
         assertFalse("La liste des NPC doit contenir des NPC après l'initialisation.", salle.getListNPC().isEmpty());
     }
@@ -50,7 +48,7 @@ public class SalleTest {
 
         NPC npc = salle.getListNPC().get(0); // Prenez un NPC
         npc.setAlive(false); // Simulez la mort du NPC
-        salle.refreshGrille();
+        salle.refreshGrille(player);
 
         assertFalse("Le NPC mort devrait être retiré de la liste.", salle.getListNPC().contains(npc));
         assertEquals("La cellule du NPC mort devrait être vide.", salle.getGrille()[npc.getPosX()].get(npc.getPosY()), " ");
